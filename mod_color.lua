@@ -5,7 +5,8 @@ function init()
         isStarted = false,
     }
 
-    COLORS = {0x555555,
+    -- COLORSORDER[2,13] = {"BLUE","RED","YELLOW","CYAN","WHITE","ORANGE","MINT","SALMON","PURPLE","PINK","PERIWINKLE","GREEN"}
+    COLORS = {0x555555, -- gray
         0x0000ff,0xff0000,
         0xffff00,0x00ffff,
         0xffffff,0xffbb00,
@@ -15,17 +16,18 @@ function init()
     }
 
     counter = 0
-    
+    colorlog = {}
     init_game()
 end
  
 function init_game()
+
     OPTS.time = 0
     g2.game_reset()
     g2.state = "play"
     g2.view_set(0, 0, OPTS.sw, OPTS.sh)
 
-    local neutral_player = g2.new_user("", COLORS[math.random(2,13)])
+    neutral_player = g2.new_user("", COLORS[math.random(2,13)])
     g2.player = neutral_player
     neutral_player.ships_production_enabled = false
     neutral_player.title_value = nil
@@ -35,13 +37,19 @@ function init_game()
     local x = math.random()*OPTS.sw --add bounds
     local y = math.random()*OPTS.sh
     g2.new_planet(neutral_player, x, y, 100, 100)
-    
-    --set timer to run
-
-    --stop timer when planet is clicked
-    --destroy planet on click 
-    
-
+end
+--put all times in list of corresponding color
+function appendColorlog()
+    for i=2, #COLORS do
+        if neutral_player.render_color == COLORS[i] then
+            if colorlog[i-1] == nil then
+                colorlog[i-1] = string.format("%f", OPTS.time)
+            else
+                colorlog[i-1] = {"time1","time2"} --find way to add to already existing tables
+            end
+            print(dump(colorlog))
+        end
+    end
 end
 
 function loop(t)
@@ -50,17 +58,17 @@ function loop(t)
     local home = neutral_planet[1]
     if home:selected() and not isStarted then
         OPTS.isStarted = true
-        home:destroy()
-        g2.play_sound("sfx-explode.wav")
+        home:destroy(); g2.play_sound("sfx-explode.wav") --destroy planet on click 
         score_menu()
+        appendColorlog()
         g2.state ="pause"
     end
     
     counter = 0
-    for p in pairs(g2.search("planet -neutral")) do
+    --[[ for p in pairs(g2.search("planet -neutral")) do
         counter = counter + 1
     end
-
+ ]]
     --[[ if counter >= 1 then
         score_menu()
         g2.state ="pause"
@@ -79,6 +87,11 @@ function event(e)
         g2.state = "play"
         init_game()
     end
+    if e.type == "onclick" and e.value == "restart" then
+        g2.state = "play"
+        init_game()
+    end
+
 end
  
 function init_win()
