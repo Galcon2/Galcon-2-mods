@@ -12,3 +12,6 @@ mod_osu.lua |
 
 float_training.lua |
   train your floating skills in this mod.
+  
+glide_map.lua |
+  Gliding time trial.
