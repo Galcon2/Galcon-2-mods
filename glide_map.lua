@@ -116,21 +116,39 @@ function get_ready()
     g2.html =
         "glide" ..
         "<table>" ..
-            "<tr><td><h1>Gliding Challenge: Get Ready!</h1>" ..
-                "<tr><td><input type='button' value='ZigZag map' onclick='newmap:zigzag' />" ..
-                    "<tr><td><input type='button' value='Circular map' onclick='newmap:circular' />" ..
-                        "<tr><td><input type='button' value='Line map' onclick='newmap:row' />" ..
-                            "<tr><td><input type='button' value='Cross map' onclick='newmap:cross' /></tr>" ..
-                                "<tr><td><input type='button' value='Log Spiral map' onclick='newmap:logspiral' />" ..
-                                    "<tr><td><input type='button' value='Astroid map' onclick='newmap:astroid' />" ..
-                                        "<tr><td><input type='button' value='Butterfly map' onclick='newmap:butterfly' />" ..
-                                            "<tr><td><input type='button' value='Random 5x5 Grid map' onclick='newmap:randomgrid' /></tr>" ..
-                                                "<tr><td><p>Neutrals (depends on map type):</p><td><input type='text' name='num_planets'  />" ..
-                                                    "<tr><td><p>Home production:</p><td><input type='text' name='homeProd'  />" ..
-                                                        "<tr><td><p>Neutral production:</p><td><input type='text' name='neutralProd'  />" ..
-                                                            "glide"
+        "<tr><td colspan= 3><h1>Gliding Challenge: Get Ready!</h1>" ..
+            "<td colspan= 3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"..
+            "<td colspan= 3><h1>No-glide bonus maps!</h1>" ..
+        
+        "<tr><td></tr></td>"..
 
-    g2.form.num_planets = OPTS.num_planets
+        "<tr><td colspan= 3><input type='button' value='ZigZag map' onclick='newmap:zigzag' />" .. --new glide map
+            "<td colspan= 3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"..
+            "<td colspan= 3><input type='button' value='Log Spiral map' onclick='newmap:logspiral' />" .. --new non-glide map
+
+        "<tr><td colspan= 3><input type='button' value='Circular map' onclick='newmap:circular' />" ..
+            "<td colspan= 3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"..
+            "<td colspan= 3><input type='button' value='Butterfly map' onclick='newmap:butterfly' />" ..
+
+        "<tr><td colspan= 3><input type='button' value='Line map' onclick='newmap:row' />" ..
+            "<td colspan= 3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"..
+            "<td colspan= 3><input type='button' value='Astroid map' onclick='newmap:astroid' />" ..
+
+        "<tr><td colspan= 3><input type='button' value='Cross map' onclick='newmap:cross' />" ..
+            "<td colspan= 3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"..
+            "<td colspan= 3><input type='button' value='Random 5x5 Grid map' onclick='newmap:randomgrid' />" ..
+
+        "<tr><td></tr></td>"..
+        "<tr><td></tr></td>"..
+        "<tr><td colspan=3><h1>Settings:&nbsp;</h1>".. --&nbsp; fixes shaking bug
+        "<tr><td></tr></td>"..
+        --settings go here
+        "<tr><td colspan=3><p>Neutrals (depends on map type):</p><td><input type='text' name='num_planets'  />" ..
+        "<tr><td colspan=3><p>Home production:</p><td><input type='text' name='homeProd'  />" ..
+        "<tr><td colspan=3><p>Neutral production:</p><td><input type='text' name='neutralProd'  />" ..
+        "glide";
+
+  g2.form.num_planets = OPTS.num_planets
     g2.form.homeProd = OPTS.homeProd
     g2.form.neutralProd = OPTS.neutralProd
 end
@@ -275,7 +293,7 @@ function glide_init()
 
             local home = math.floor(math.random(1, 25.5))
 
-            planetAsPix(theGrid, player, neutral, OPTS.neutralProd, costs, home, OPTS.homeProd)
+            planetAsPix(theGrid, player, neutral, OPTS.neutralProd, costs, home)
         elseif shape == "cross" then
             local t = OPTS.num_planets / 4
             radius = 1.4 * (OPTS.num_planets + 1)
@@ -365,40 +383,40 @@ function glide_victory()
                                                             "glide"
 end
 
-function planetAsPix(thePix, pla, neu, pro, co, hm, hmp)
+function planetAsPix(thePix, pla, neu, pro, co, hm)
     local spacefac = 50
     --  pla.planet_crash = 1
     if thePix[1][1] == 1 then
         if hm == 1 then
-            g2.new_planet(pla, -2 * spacefac, -2 * spacefac, hmp, 100)
+            g2.new_planet(pla, -2 * spacefac, -2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -2 * spacefac, -2 * spacefac, pro, co)
         end
     end
     if thePix[1][2] == 1 then
         if hm == 2 then
-            g2.new_planet(pla, -2 * spacefac, -1 * spacefac, hmp, 100)
+            g2.new_planet(pla, -2 * spacefac, -1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -2 * spacefac, -1 * spacefac, pro, co)
         end
     end
     if thePix[1][3] == 1 then
         if hm == 3 then
-            g2.new_planet(pla, -2 * spacefac, 0 * spacefac, hmp, 100)
+            g2.new_planet(pla, -2 * spacefac, 0 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -2 * spacefac, 0 * spacefac, pro, co)
         end
     end
     if thePix[1][4] == 1 then
         if hm == 4 then
-            g2.new_planet(pla, -2 * spacefac, 1 * spacefac, hmp, 100)
+            g2.new_planet(pla, -2 * spacefac, 1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -2 * spacefac, 1 * spacefac, pro, co)
         end
     end
     if thePix[1][5] == 1 then
         if hm == 5 then
-            g2.new_planet(pla, -2 * spacefac, 2 * spacefac, hmp, 100)
+            g2.new_planet(pla, -2 * spacefac, 2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -2 * spacefac, 2 * spacefac, pro, co)
         end
@@ -406,35 +424,35 @@ function planetAsPix(thePix, pla, neu, pro, co, hm, hmp)
 
     if thePix[2][1] == 1 then
         if hm == 6 then
-            g2.new_planet(pla, -1 * spacefac, -2 * spacefac, hmp, 100)
+            g2.new_planet(pla, -1 * spacefac, -2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -1 * spacefac, -2 * spacefac, pro, co)
         end
     end
     if thePix[2][2] == 1 then
         if hm == 7 then
-            g2.new_planet(pla, -1 * spacefac, -1 * spacefac, hmp, 100)
+            g2.new_planet(pla, -1 * spacefac, -1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -1 * spacefac, -1 * spacefac, pro, co)
         end
     end
     if thePix[2][3] == 1 then
         if hm == 8 then
-            g2.new_planet(pla, -1 * spacefac, 0 * spacefac, hmp, 100)
+            g2.new_planet(pla, -1 * spacefac, 0 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -1 * spacefac, 0 * spacefac, pro, co)
         end
     end
     if thePix[2][4] == 1 then
         if hm == 9 then
-            g2.new_planet(pla, -1 * spacefac, 1 * spacefac, hmp, 100)
+            g2.new_planet(pla, -1 * spacefac, 1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -1 * spacefac, 1 * spacefac, pro, co)
         end
     end
     if thePix[2][5] == 1 then
         if hm == 10 then
-            g2.new_planet(pla, -1 * spacefac, 2 * spacefac, hmp, 100)
+            g2.new_planet(pla, -1 * spacefac, 2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, -1 * spacefac, 2 * spacefac, pro, co)
         end
@@ -442,35 +460,35 @@ function planetAsPix(thePix, pla, neu, pro, co, hm, hmp)
 
     if thePix[3][1] == 1 then
         if hm == 11 then
-            g2.new_planet(pla, 0 * spacefac, -2 * spacefac, hmp, 100)
+            g2.new_planet(pla, 0 * spacefac, -2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 0 * spacefac, -2 * spacefac, pro, co)
         end
     end
     if thePix[3][2] == 1 then
         if hm == 12 then
-            g2.new_planet(pla, 0 * spacefac, -1 * spacefac, hmp, 100)
+            g2.new_planet(pla, 0 * spacefac, -1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 0 * spacefac, -1 * spacefac, pro, co)
         end
     end
     if thePix[3][3] == 1 then
         if hm == 13 then
-            g2.new_planet(pla, 0 * spacefac, 0 * spacefac, hmp, 100)
+            g2.new_planet(pla, 0 * spacefac, 0 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 0 * spacefac, 0 * spacefac, pro, co)
         end
     end
     if thePix[3][4] == 1 then
         if hm == 14 then
-            g2.new_planet(pla, 0 * spacefac, 1 * spacefac, hmp, 100)
+            g2.new_planet(pla, 0 * spacefac, 1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 0 * spacefac, 1 * spacefac, pro, co)
         end
     end
     if thePix[3][5] == 1 then
         if hm == 15 then
-            g2.new_planet(pla, 0 * spacefac, 2 * spacefac, hmp, 100)
+            g2.new_planet(pla, 0 * spacefac, 2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 0 * spacefac, 2 * spacefac, pro, co)
         end
@@ -478,35 +496,35 @@ function planetAsPix(thePix, pla, neu, pro, co, hm, hmp)
 
     if thePix[4][1] == 1 then
         if hm == 16 then
-            g2.new_planet(pla, 1 * spacefac, -2 * spacefac, hmp, 100)
+            g2.new_planet(pla, 1 * spacefac, -2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 1 * spacefac, -2 * spacefac, pro, co)
         end
     end
     if thePix[4][2] == 1 then
         if hm == 17 then
-            g2.new_planet(pla, 1 * spacefac, -1 * spacefac, hmp, 100)
+            g2.new_planet(pla, 1 * spacefac, -1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 1 * spacefac, -1 * spacefac, pro, co)
         end
     end
     if thePix[4][3] == 1 then
         if hm == 18 then
-            g2.new_planet(pla, 1 * spacefac, 0 * spacefac, hmp, 100)
+            g2.new_planet(pla, 1 * spacefac, 0 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 1 * spacefac, 0 * spacefac, pro, co)
         end
     end
     if thePix[4][4] == 1 then
         if hm == 19 then
-            g2.new_planet(pla, 1 * spacefac, 1 * spacefac, hmp, 100)
+            g2.new_planet(pla, 1 * spacefac, 1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 1 * spacefac, 1 * spacefac, pro, co)
         end
     end
     if thePix[4][5] == 1 then
         if hm == 20 then
-            g2.new_planet(pla, 1 * spacefac, 2 * spacefac, hmp, 100)
+            g2.new_planet(pla, 1 * spacefac, 2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 1 * spacefac, 2 * spacefac, pro, co)
         end
@@ -514,35 +532,35 @@ function planetAsPix(thePix, pla, neu, pro, co, hm, hmp)
 
     if thePix[5][1] == 1 then
         if hm == 21 then
-            g2.new_planet(pla, 2 * spacefac, -2 * spacefac, hmp, 100)
+            g2.new_planet(pla, 2 * spacefac, -2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 2 * spacefac, -2 * spacefac, pro, co)
         end
     end
     if thePix[5][2] == 1 then
         if hm == 22 then
-            g2.new_planet(pla, 2 * spacefac, -1 * spacefac, hmp, 100)
+            g2.new_planet(pla, 2 * spacefac, -1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 2 * spacefac, -1 * spacefac, pro, co)
         end
     end
     if thePix[5][3] == 1 then
         if hm == 23 then
-            g2.new_planet(pla, 2 * spacefac, 0 * spacefac, hmp, 100)
+            g2.new_planet(pla, 2 * spacefac, 0 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 2 * spacefac, 0 * spacefac, pro, co)
         end
     end
     if thePix[5][4] == 1 then
         if hm == 24 then
-            g2.new_planet(pla, 2 * spacefac, 1 * spacefac, hmp, 100)
+            g2.new_planet(pla, 2 * spacefac, 1 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 2 * spacefac, 1 * spacefac, pro, co)
         end
     end
     if thePix[5][5] == 1 then
         if hm == 25 then
-            g2.new_planet(pla, 2 * spacefac, 2 * spacefac, hmp, 100)
+            g2.new_planet(pla, 2 * spacefac, 2 * spacefac, pro, 100)
         else
             g2.new_planet(neu, 2 * spacefac, 2 * spacefac, pro, co)
         end
