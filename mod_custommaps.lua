@@ -26,10 +26,10 @@ function init_game()
     g2.view_set(0, 0, OPTS.sw, OPTS.sh)
     g2.state = "play"
 
-    user = g2.new_user("game11", COLORS[1])
-    g2.player = user
+    user = g2.new_user("neutral", COLORS[1])
+    g2.neutral = user
 
-    home_user = g2.new_user("player1", COLORS[2])
+    home_user = g2.new_user("home", COLORS[2])
 
     planet_lock = false
     planet_info_lock = false
